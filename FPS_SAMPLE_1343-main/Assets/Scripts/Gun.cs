@@ -6,6 +6,7 @@ using UnityEngine.Events;
 public class Gun : MonoBehaviour
 {
     public UnityEvent<int, int> updateAmmo;
+    public UnityEvent shootEffect;
     // references
     [SerializeField] Transform gunBarrelEnd;
     [SerializeField] GameObject bulletPrefab;
@@ -23,6 +24,7 @@ public class Gun : MonoBehaviour
     void Start()
     {
         ammo = maxAmmo;
+        updateAmmo.Invoke(ammo, maxAmmo);
     }
 
     // Update is called once per frame
@@ -43,12 +45,13 @@ public class Gun : MonoBehaviour
             return false;
         }
 
-        Debug.Log("Bang");
+        //Debug.Log("Bang");
         Instantiate(bulletPrefab, gunBarrelEnd.transform.position, gunBarrelEnd.rotation);
         anim.SetTrigger("shoot");
         timeBetweenShots = 0;
         ammo -= 1;
-        updateAmmo.Invoke(ammo, maxAmmo);
+        updateAmmo?.Invoke(ammo, maxAmmo);
+        shootEffect?.Invoke();
         return true;
     }
 
