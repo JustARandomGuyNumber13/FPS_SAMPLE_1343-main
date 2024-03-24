@@ -17,7 +17,7 @@ public class RefillAmmo : MonoBehaviour
         So I treated it as add more ammo instead of replacing it with the maxAmmo amount
         Same as updating the maxAmmo value, so I will just keep as default
          */
-        if(Input.GetButtonDown("Interact")) print("Press E: True, Player in range: " + isPlayerInRange);
+        //if(Input.GetButtonDown("Interact")) print("Press E: True, Player in range: " + isPlayerInRange);
         if (isPlayerInRange && Input.GetButtonDown("Interact"))
             player.IncreaseAmmo(10);
     }
