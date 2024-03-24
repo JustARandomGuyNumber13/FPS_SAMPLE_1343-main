@@ -12,7 +12,10 @@ public class PlayerHUD : MonoBehaviour
     [SerializeField] TMP_Text currentAmmoText;
     [SerializeField] TMP_Text maxAmmoText;
     [SerializeField] private CinemachineVirtualCamera camera;
+    [SerializeField] ParticleSystem muzzleEffect;
+    [SerializeField] Image bloodFlash;
 
+    private Color bloodFlashTransparency;
     private CinemachineBasicMultiChannelPerlin cameraEffect;
     FPSController player;
     Gun gun;
@@ -23,18 +26,23 @@ public class PlayerHUD : MonoBehaviour
         player = FindObjectOfType<FPSController>();
         gun = FindObjectOfType<Gun>();
         cameraEffect = camera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+        bloodFlashTransparency = bloodFlash.color;
 
         gun.updateAmmo.AddListener(UpdateAmmoValue);
         player.decreaseHealth.AddListener(DecreaseHealth);
+    }
+    private void Update()
+    {
+        if (bloodFlashTransparency.a > 0)
+        {
+            bloodFlashTransparency.a -= 1 * Time.deltaTime;
+            bloodFlash.color = bloodFlashTransparency;
+        }
     }
     private void UpdateAmmoValue(int curAmmo, int maxAmmo)
     {
         currentAmmoText.text = curAmmo.ToString();
         maxAmmoText.text = maxAmmo.ToString();
-    }
-    private void DecreaseHealth(int percent) 
-    {
-        healthBar.fillAmount -= 0.1f;
     }
     public void ShakeCamera()
     {
@@ -47,7 +55,17 @@ public class PlayerHUD : MonoBehaviour
         cameraEffect.m_AmplitudeGain = 0;
     }
     public void MuzzleEffect()
-    { 
-        
+    {
+        muzzleEffect.Play();
+    }
+    private void DecreaseHealth(int percent) 
+    {
+        healthBar.fillAmount -= 0.1f;
+        BloodFlashEffect();
+    }
+    private void BloodFlashEffect()
+    {
+        bloodFlashTransparency.a = 1;
+        bloodFlash.color = bloodFlashTransparency;
     }
 }

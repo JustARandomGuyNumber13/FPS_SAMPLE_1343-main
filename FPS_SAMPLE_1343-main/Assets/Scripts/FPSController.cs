@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 public class FPSController : MonoBehaviour
 {
-    public UnityEvent<int> decreaseHealth; // in Percent form
+    public UnityEvent<int> decreaseHealth; ////////////////////////////////////////////////////////////////////////////////////////////////////////
     // references
     CharacterController controller;
     [SerializeField] GameObject cam;
@@ -172,7 +172,7 @@ public class FPSController : MonoBehaviour
             var collisionPoint = hit.collider.ClosestPoint(transform.position);
             var knockbackAngle = (transform.position - collisionPoint).normalized;
             velocity = (20 * knockbackAngle);
-            decreaseHealth.Invoke(10);
+            decreaseHealth?.Invoke(10);////////////////////////////////////////////////////////////////////////////////////////////////////////
         }
     }
 }
